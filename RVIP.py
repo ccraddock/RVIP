@@ -23,6 +23,10 @@ import os  # handy system and path functions
 # for debegguing set full_screen to false
 FULL_SCREEN = False
 
+# number of "respond now" target cues for practice
+NUM_PRACTICE_RESPOND_NOW = 8
+PRACTICE_OUTCOME_CUE_ONTIME = 1.2
+
 # --- define the task parameters
 duration = 4.0;  # minutes
 rateMin = 100.0; # stim per minute
@@ -218,7 +222,8 @@ if not os.path.isdir('../data'+os.path.sep+expName):
     os.makedirs('../data'+os.path.sep+expName)
 
 filename = '../data' + os.path.sep + expName + os.path.sep + \
-    '%s_%s' %(expInfo['Participant'], expInfo['date'])
+    '%s_%s_%s' %(expInfo['Participant'], expInfo['date'], \
+    expInfo['Configuration'])
 logFile = logging.LogFile(filename+'.log', level=logging.EXP)
 # this outputs to the screen, not a file
 logging.console.setLevel(logging.WARNING)
@@ -286,6 +291,25 @@ square = visual.ShapeStim(win,
     interpolate=True,
     opacity=0.9,
     autoLog=False)
+
+if expInfo['Configuration'] == 'Practice':
+
+    # clock for timing practice cues
+    practiceClock = core.Clock()
+
+    # setup text boxes for practice cues
+    respond_now_text = visual.TextStim(win=win, ori=0,\
+        name='respond_now_text',\
+        text='Press Space Now',    font=u'Arial',\
+        pos=[0, 0.35], height=0.1, wrapWidth=None,\
+        color='white', colorSpace=u'rgb', opacity=1,\
+        depth=0.0)
+
+    outcome_text = visual.TextStim(win=win, ori=0, name='outcome_text',
+        text='outcome',    font=u'Arial',
+        pos=[0, -0.35], height=0.1, wrapWidth=None,
+        color='white', colorSpace=u'rgb', opacity=1,
+        depth=0.0)
 
 # Initialize components for Routine "Thanks"
 ThanksClock = core.Clock()
@@ -409,6 +433,11 @@ stim_stat_miss = 0
 stim_stat_false_alarm = 0
 stim_stat_target_count = 0
 
+if expInfo['Configuration'] == 'Practice':
+    # initialize text boxes for practice cues
+    respond_now_text.status=NOT_STARTED
+    outcome_text.status=NOT_STARTED
+
 # loop over the trials, presenting each one for .6 seconds and 
 # hadnling responses to targets
 for thisTrial in trials:
@@ -445,6 +474,20 @@ for thisTrial in trials:
         event.clearEvents()
         # count the target
         stim_stat_target_count += 1
+
+        if expInfo['Configuration'] == 'Practice' and \
+            stim_stat_target_count <= NUM_PRACTICE_RESPOND_NOW:
+
+            # initialize text boxes for practice cues
+            respond_now_text.status=STARTED
+            respond_now_text.setAutoDraw(True)
+
+    # if respond_now cue was on, turn it off
+    if expInfo['Configuration'] == 'Practice':
+        if respond_now_text.status == STARTED:
+            if thisTrial['response'] == 0:
+                respond_now_text.status=STOPPED
+                respond_now_text.setAutoDraw(False)
 
 
     #-------Start Routine "trial"-------
@@ -512,10 +555,36 @@ for thisTrial in trials:
                 stim_response.keys = []
                 stim_response.clock.reset()
                 event.clearEvents()
+
+                # if we are in practice mode, then tell the user that they
+                # got it right
+                if expInfo['Configuration'] == 'Practice':
+                    practiceClock.reset()
+                    outcome_text.setText('Hit')
+                    outcome_text.setColor('green')
+                    outcome_text.setAutoDraw(True)
+                    outcome_text.status == STARTED
             else:
                 logging.log(level=logging.EXP, msg='No target present, false alarm')
                 # if we are not started, then this is a false alarm
                 stim_stat_false_alarm += 1
+
+                # if we are in practice mode, then tell the user that they
+                # got it wrong
+                if expInfo['Configuration'] == 'Practice':
+                    practiceClock.reset()
+                    outcome_text.setText('False Alarm')
+                    outcome_text.setColor('red')
+                    outcome_text.setAutoDraw(True)
+                    outcome_text.status == STARTED
+
+        if expInfo['Configuration'] == 'Practice':
+            if outcome_text.status == STARTED:
+                if practiceClock.getTime() > PRACTICE_OUTCOME_CUE_ONTIME:
+                    # if the response is on for longer than the alloted
+                    # time, turn it off
+                    outcome_text.setAutoDraw(False)
+                    outcome_text.status == STOPPED
 
         # check if all components have finished
         if not continueRoutine:  # a component has requested a forced-end of Routine
