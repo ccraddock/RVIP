@@ -418,7 +418,7 @@ trials = data.TrialHandler(nReps=1, method=u'sequential', extraInfo=expInfo,
 thisExp.addLoop(trials)  # add the loop to the experiment
 
 # turn on the square for all trials
-square.setAutoDraw(val=True)
+square.setAutoDraw(True)
 
 # turn on key logging for all trials
 stim_response = event.BuilderKeyResponse()  # create an object of type KeyResponse
