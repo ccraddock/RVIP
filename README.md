@@ -14,6 +14,7 @@ This is a [PsychoPy](http://www.psychopy.org/) (Peirce, 2008) implementation of 
 The RVIP assesses working memory and sustained attention. Neuroimaging experiments using PET have found that this task activates a bilateral fronto-parietal network (Coull et al., 1996). Response times and detection accuracy from this task have been previously correlated with DMN function (Pagnoni, 2012). 
 
 ![Fig. 1 Example stimuli for RVIP task.](rvip_stim.png?raw=true "Fig. 1 Example stimuli for RVIP task.")
+
 *Fig. 1 Example stimuli for RVIP task.*
 
 A pseudo-random stream of digits (0-9) is presented to the participants in white, centered on a black background, surrounded by a white box (see Fig 1). Participants are instructed to press the space bar whenever they observe the sequences 2-4-6, 3-5-7, or 4-6-8. Digits are presented one after another at a rate of 100 digits per minute and the number of stimuli that occurred between targets varied between 8 and 30. Responses that occurred within 1.5 seconds of the last digit of a target sequence being presented were considered “hits”. Stimuli presentation continued until a total of 32 target sequences were encountered, which required on average 4 minutes and 20 seconds. Before performing the task, participants completed a practice version that indicated when a target sequence had occurred and provided feedback (“hit” or “false alarm”) whenever the participant pressed the space bar. Participants were allowed to repeat the practice until they felt that they were comfortable with the instructions.
@@ -23,6 +24,7 @@ A pseudo-random stream of digits (0-9) is presented to the participants in white
 Results from 125 participants (21-45 years old, with a variety of clinical and subclinical psychiatric symptoms)  from the openly shared [Enhanced Nathan Kline Institute - Rockland Sample Neurofeedback study](http://fcon_1000.projects.nitrc.org/indi/enhanced/) are illustrated in figure 2.
 
 ![Fig. 2 illustrates the hit rate, false alarm rate, and A' for 125 particpants from the Enhanced Nathan Kline Institute - Rockland Sample Neurofeedback study](rvip_performance.png?raw=true "Fig. 2 illustrates the hit rate, false alarm rate, and A' for 125 particpants from the Enhanced Nathan Kline Institute - Rockland Sample Neurofeedback study.")
+
 *Fig. 2 illustrates the hit rate, false alarm rate, and A' for 125 particpants from the Enhanced Nathan Kline Institute - Rockland Sample Neurofeedback study.*
 
 
