@@ -1,3 +1,4 @@
+[![DOI](https://zenodo.org/badge/doi/10.5281/zenodo.61453.svg)](http://dx.doi.org/10.5281/zenodo.61453)
 
 # Rapid Visual Information Processing (RVIP) Task
 
