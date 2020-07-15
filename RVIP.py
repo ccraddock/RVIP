@@ -14,7 +14,7 @@ import numpy as np  # whole numpy lib is available, prepend 'np.'
 from numpy import sin, cos, tan, log, log10, pi, average, sqrt, std, deg2rad, rad2deg, linspace, asarray
 from numpy.random import random, randint, normal, shuffle
 import os  # handy system and path functions
-
+import random
 
 ############################
 # Configuration Parameters #
@@ -74,7 +74,7 @@ instruction_text4=u'or (4-6-8).'
 diff = lambda l1,l2: [x for x in l1 if x not in l2]
 #
 # randomly choose an element from a list
-choice = lambda(a): a[np.random.randint(len(a))]
+choice = lambda a: a[np.random.randint(len(a))]
 
 # calculate the number of stims
 nStim = int(np.ceil((duration*rateMin)/float(targetLen))*float(targetLen))
@@ -108,8 +108,7 @@ while t < nTargets:
     # make sure that there is room in the list for a new target
     if (targetNdx+targetLen) < nStim:
         # populate stimuli with a randomly chosen target
-        stims[targetNdx:targetNdx+targetLen]=targets[\
-            np.random.random_integers(0,np.shape(targets)[0]-1,size=1)]
+        stims[targetNdx:targetNdx+targetLen]=random.choice(targets)
         # update the response binary vector to indicate that we 
         # expect a response to this sequence
         response[targetNdx+targetLen-1]=1
@@ -120,7 +119,7 @@ while t < nTargets:
         # if there isn't enough room at the end of the list, we are done
         break
 
-print "created %d stimuli"%(t)
+print('created', int(t) , 'stimuli')
 logging.log(level=logging.EXP, msg='Created %d stimuli'%(t))
 
 # now go through and add non-targets based on these rools
@@ -181,14 +180,14 @@ for i in range(0,nStim):
 # dupliace or the kill sequence
 dups=[i for i in range(1,nStim) if stims[i-1] == stims[i]]
 if dups:
-    print "found %d duplicates %s"%(len(dups),\
-        ",".join([str(d) for d in dups]))
+    print('found %d duplicates %s'%(len(dups),\
+        ",".join([str(d) for d in dups])))
 
 killSeqs=[i for i in range(0,nStim-(targetLen+1))\
     if stims[i:i+targetLen+1] in kills]
 if killSeqs:
-    print "found %d kill sequences %s"%(len(killSeqs),\
-        ",".join([str(k) for k in killSeqs]))
+    print("found %d kill sequences %s"%(len(killSeqs),\
+        ",".join([str(k) for k in killSeqs])))
 
 # convert the stim and response lists in to a list of dictionaries, which is
 # the format that PsychoPy seems to prefer
@@ -634,15 +633,15 @@ else:
         /(4*stim_stat_false_alarm_rate*(1-stim_stat_hit_rate))
 
 # output the stats
-print stim_stat_rt
-print "total targets: ", stim_stat_target_count
-print "hits: ",stim_stat_hit
-print "misses: ",stim_stat_miss
-print "false alarms: ",stim_stat_false_alarm
-print "mean rt: ", np.mean(stim_stat_rt)
-print "hit rate: ", stim_stat_hit_rate
-print "false alarm rate: ",stim_stat_false_alarm_rate
-print "A': ",stim_stat_Aprime
+print(stim_stat_rt)
+print("total targets: ", stim_stat_target_count)
+print("hits: ",stim_stat_hit)
+print("misses: ",stim_stat_miss)
+print("false alarms: ",stim_stat_false_alarm)
+print("mean rt: ", np.mean(stim_stat_rt))
+print("hit rate: ", stim_stat_hit_rate)
+print("false alarm rate: ",stim_stat_false_alarm_rate)
+print("A': ",stim_stat_Aprime)
 
 logging.log(level=logging.EXP, msg="total targets: %d"%(stim_stat_target_count))
 logging.log(level=logging.EXP, msg="hits: %d"%(stim_stat_hit))
